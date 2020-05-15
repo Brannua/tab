@@ -1,0 +1,32 @@
+.wrapper {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.btns {
+  display: flex;
+}
+
+.btns .active {
+  background-color: #000;
+  color: #fff;
+}
+
+.btns span {
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.tabs div {
+  height: 400px;
+  background-color: #ddd;
+  display: none;
+}
+
+.tabs div.active {
+  display: block;
+}
