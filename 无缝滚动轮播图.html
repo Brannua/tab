@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>原生DOM轮播图</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .wrapper {
+      position: relative;
+      width: 500px;
+      height: 300px;
+      margin: 300px auto;
+      overflow: hidden;
+    }
+
+    .wrapper ul {
+      position: absolute;
+      width: 2500px;
+      height: 300px;
+    }
+
+    .wrapper ul li {
+      float: left;
+    }
+
+    .wrapper ul li img {
+      width: 500px;
+      height: 300px;
+    }
+
+    .wrapper .slideIndex {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .wrapper .slideIndex i {
+      display: inline-block;
+      padding: 5px;
+      margin: 10px;
+      border-radius: 50%;
+      background-color: #000;
+    }
+
+    .wrapper .slideIndex i.active {
+      background-color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <ul class="imgs">
+      <li><img src="http://p7.qhimg.com/bdm/960_593_0/t01bdf16da8a63840e8.jpg"></li>
+      <li><img src="http://p1.qhimg.com/bdm/480_296_0/t0142ba0fa7c4f4ba2d.jpg"></li>
+      <li><img src="http://p9.qhimg.com/bdm/480_296_0/t013a4ed4683039d101.jpg"></li>
+      <li><img src="http://p0.qhimg.com/bdm/480_296_0/t01ef0dfab934e7e309.jpg"></li>
+      <li><img src="http://p7.qhimg.com/bdm/960_593_0/t01bdf16da8a63840e8.jpg"></li>
+    </ul>
+    <div class="slideIndex">
+      <i data-index="0" class="active"></i>
+      <i data-index="1"></i>
+      <i data-index="2"></i>
+      <i data-index="3"></i>
+    </div>
+  </div>
+  <script src="./move.js"></script>
+  <script src="./index.js"></script>
+  <script>
+    /**
+ * 获取元素样式的兼容性方法
+ * @params {object} obj 操作的元素
+ * @params {string} attr 要获取的属性
+ */
+    function getStyle(obj, attr) {
+      if (obj.currentStyle) {
+        return obj.currentStyle
+      } else {
+        return window.getComputedStyle(obj, false)[attr]
+      }
+    }
+
+    /**
+     * 链式运动
+     * @params {object} obj 运动的物体
+     * @params {string} attr 属性
+     * @params {number} target 目标状态
+     * @params {number} hz 运动频率
+     * @params {function} callback 实现链式调用的回调函数
+     */
+    function chainMultiMove(obj, attr, target, hz, callback) {
+
+      clearInterval(timer)
+
+      var timer = setInterval(() => {
+
+        var speed = (target - parseFloat(getStyle(obj, attr))) / 8
+        speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed)
+        obj.style[attr] = parseFloat(getStyle(obj, attr)) + speed + 'px'
+
+        // 属性达到目标点,清除定时器并判断是否执行回调函数
+        if (parseFloat(getStyle(obj, attr)) === target) {
+          clearInterval(timer)
+          if (typeof callback == 'function') {
+            callback()
+          }
+        }
+
+      }, hz)
+    }
+
+    (function () {
+      // ul
+      var oImgs = document.getElementsByClassName('imgs')[0]
+      // 每次移动的距离
+      var eachMoveWidth = parseInt(getStyle(oImgs.children[0], 'width'))
+      // 小圆点
+      var oSlideIndex = document.getElementsByClassName('slideIndex')[0]
+      // 全局索引，对应小圆点自定义属性data-index
+      var index = 0
+
+      // 刷新当前全局索引
+      function refreshIndex() {
+        index++
+        if (index > 4) {
+          index = 1
+        }
+      }
+
+      // 刷新图片状态
+      function refreshPicture() {
+        var newLeft = -index * eachMoveWidth
+        chainMultiMove(oImgs, 'left', newLeft, 10, () => {
+          if (index === 4) {
+            oImgs.style.left = 0
+          }
+        })
+      }
+
+      // 刷新小圆点状态
+      function refreshI() {
+        var arrI = Array.prototype.slice.call(oSlideIndex.children)
+        arrI.map(i => {
+          i.setAttribute('class', '')
+        })
+        if (index !== 4) {
+          arrI[index].setAttribute('class', 'active')
+        } else {
+          arrI[0].setAttribute('class', 'active')
+        }
+      }
+
+      setInterval(() => {
+        refreshIndex()
+        refreshPicture()
+        refreshI()
+      }, 1500)
+
+    }());
+
+  </script>
+</body>
+
+</html>

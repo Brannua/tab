@@ -1,2 +1,3 @@
-# tab
-原生js tab组件demo
+# 出于学习的目的，自封装的一些小组件
+
+- Just enjoy~

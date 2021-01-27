@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Component</title>
+  <style>
+    .wrapper {
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    .btns {
+      display: flex;
+    }
+
+    .btns .active {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .btns span {
+      flex: 1;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border: 1px solid #000;
+      box-sizing: border-box;
+    }
+
+    .tabs div {
+      height: 400px;
+      background-color: #ddd;
+      display: none;
+    }
+
+    .tabs div.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="btns">
+      <span index="0" class="active">js</span>
+      <span index="1">css</span>
+      <span index="2">html</span>
+    </div>
+    <div class="tabs">
+      <div class="active">js</div>
+      <div>css</div>
+      <div>html</div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+
+      var index = 0,
+        oBtns = document.getElementsByClassName('btns')[0]
+
+      oBtns.onclick = (e) => {
+        index = parseInt(e.target.getAttribute('index'))
+        refreshBtns(index)
+        refreshTabs(index)
+      }
+
+      function refreshBtns(index) {
+        var oSpans = document.getElementsByTagName('span')
+        for (var i = 0, len = oSpans.length; i < len; i++) {
+          oSpans[i].setAttribute('class', '')
+        }
+        oSpans[index].setAttribute('class', 'active')
+      }
+
+      function refreshTabs(index) {
+        var oDivs = document.getElementsByClassName('tabs')[0].children
+        for (var i = 0, len = oDivs.length; i < len; i++) {
+          oDivs[i].setAttribute('class', '')
+        }
+        oDivs[index].setAttribute('class', 'active')
+      }
+
+    })
+  </script>
+</body>
+
+</html>

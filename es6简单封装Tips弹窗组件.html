@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tips Component</title>
+    <style>
+        .toast {
+            width: 220px;
+            color: #e6e6e6;
+            background: rgb(0, 0, 0);
+            text-align: center;
+            position: fixed;
+            left: 10%;
+            top: 10%;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toast"></div>
+    <script>
+        class Toast {
+            constructor(toastTxt, time) {
+                this.toastTxt = toastTxt || '默认提示语';
+                this.time = time || 2000;
+            }
+            showToast() {
+                var { toastTxt, time } = this,
+                    fatherNode = document.createElement('div');
+
+                fatherNode.className = 'toast';
+                fatherNode.innerHTML = `
+<div>
+    <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAYAAACoPemuAAADIElEQVRYR+2XT0jUQRTH3/e3u0YSYSDuzgwUCOHBS4e6BJmEEfRfiDAI6aAEYkTgsahDNy+BhUQgEgbRoZCoiEpSokuXLh26CAUz4/5YECSIdH++GHFjG9f9o9tq4Bxn5r33+X3fm/d2QZt0YZNy0RZYpZnZUuy/VSwMw71RFF0goqlUKjW5KVJprT3AzG+JaOeystc3HCydTh+Moug1Ee3IpZuZJzYUzFrbvri4+BLA9vwaZObeDQPTWh8loucAtnlQV5RSdzcEzFp7gpmfEVEiD4qJ6LKU8oHbqzmYMaaTiJ4QUTwfCsAlIcTD3F5NwbTWXQDGiChWDKqmillru5l51MtSxMwXlVKP/QZcE8VWgcoS0Xkppau1FQthGKay2ewoM7cCuCqlfFrp+Ch23xjTS0T3PaWyAM4KIV6sZgut9TiA08sXmJl7lFIj1YDTWvcDGPJ8LQDoLAa1VGNaa9dLTuYbA+gTQgyvB85aO8DMg16P+kVEp5RSb0r5hjFmPzNP+d2XiG5IKW+XclDoXGt9C8BND+pnEATHhRDvy/G5VPyF5tWy8R0p5bVyHOXuaK0HAQz4UPF4vCOZTH4s19efV1lgwud8DEsp+8pxqLUeAtDv3f0Ri8WOVQK1oo+FYbhvYWFhAsAu74tHpJQ9ANzYWLGYGdZa9/LcC8xfcwA6hBCfyvmwv+rcN7DWtjKzq4NG7+yREKIbwKIH7aBc4+z29mcTicSRpqamz5VCrVAsr05aAHwoADcuhDgHwDVHYuaYMWYMQJcPFQTBISHEl7VArQrmDrTWDm6SiJKe81dCiDOOy1rrhrEbyvkrA6B9PVBFwdzhzMxMcxRFrpUoT5F3AOYKQKWZ+bBS6utalcrZlZyVxpg97g8CEe0uESwdBMHBVCo1vV6okorlAmQyGTU/P+/gmgsFZWYdi8XaqgVVNpi7mE6nk9lsdhJAiwf3nYjapJTfqqFU2anMD2aMcS3EtZLW5f3purq6tsbGRl1NqIoUywVm5jr3m93B1dfX32toaJitNtSawP4FRCGfJV9lrUD8OFtglSq/pViliv0GWXY44L2QOz4AAAAASUVORK5CYII=">
+    <div>${toastTxt}</div>
+</div>
+`;
+
+                document.body.appendChild(fatherNode);
+
+                setTimeout(() => {
+                    var oToast = document.getElementsByClassName('toast')[0];
+                    oToast.parentNode.removeChild(oToast);
+                }, time);
+            };
+        }
+
+        var T = new Toast('传入的提示语', 2000);
+        T.showToast();
+    </script>
+</body>
+
+</html>
